@@ -4,7 +4,7 @@
 #include <cmath>
 #include <ceres/ceres.h>
 
-#include "ImageDataManager.h"
+#include "ImageDataManager.hpp"
 
 class LightDirectionSolver
 {

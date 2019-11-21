@@ -12,11 +12,11 @@
 
 #endif
 
-#include "DenoiseProcessCircleModel.h"
-#include "DenoiseProcessEllipseModel.h"
-#include "DenoiseProcessEllipseModelHeavy.h"
-#include "RGBSpectrumDifferentialProcess.h"
-#include "LightDirectionSolver.h"
+#include "DenoiseProcessCircleModel.hpp"
+#include "DenoiseProcessEllipseModel.hpp"
+#include "DenoiseProcessEllipseModelHeavy.hpp"
+#include "RGBSpectrumDifferentialProcess.hpp"
+#include "LightDirectionSolver.hpp"
 
 void main()
 {

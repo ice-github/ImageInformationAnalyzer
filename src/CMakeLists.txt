@@ -12,4 +12,6 @@ add_library(ImageInformationAnalyzer
 target_include_directories(ImageInformationAnalyzer
   PUBLIC
   ${PROJECT_SOURCE_DIR}/src
+  ${OpenCV_INCLUDE_DIRS}
   )
+

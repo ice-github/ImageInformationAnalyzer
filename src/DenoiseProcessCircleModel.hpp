@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DenoiseProcessInterface.h"
+#include "DenoiseProcessInterface.hpp"
 
 class DenoiseProcessCircleModel : public DenoiseProcessInterface
 {

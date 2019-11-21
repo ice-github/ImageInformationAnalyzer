@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DenoiseProcessEllipseModel.h"
+#include "DenoiseProcessEllipseModel.hpp"
 
 
 class DenoiseProcessEllipseModelHeavy: public DenoiseProcessEllipseModel
