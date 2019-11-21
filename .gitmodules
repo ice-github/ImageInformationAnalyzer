@@ -1,0 +1,6 @@
+[submodule "ThirdParty/Eigen"]
+	path = ThirdParty/Eigen
+	url = https://github.com/eigenteam/eigen-git-mirror.git
+[submodule "ThirdParty/ceres-solver"]
+	path = ThirdParty/ceres-solver
+	url = https://github.com/ceres-solver/ceres-solver.git
