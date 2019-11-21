@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ImageDataManager.h"
-#include "DenoiseProcessInterface.h"
+#include "ImageDataManager.hpp"
+#include "DenoiseProcessInterface.hpp"
 
 class RGBSpectrumDifferentialProcess: public DenoiseProcessInterface
 {

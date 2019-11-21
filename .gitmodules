@@ -4,3 +4,6 @@
 [submodule "ThirdParty/ceres-solver"]
 	path = ThirdParty/ceres-solver
 	url = https://github.com/ceres-solver/ceres-solver.git
+[submodule "ThirdParty/glog"]
+	path = ThirdParty/glog
+	url = https://github.com/google/glog.git

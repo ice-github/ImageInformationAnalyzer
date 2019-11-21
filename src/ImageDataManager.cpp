@@ -23,23 +23,23 @@ void ImageDataManager::ShowImages(bool original, bool denoised, bool diff)
 	auto diffBRMat = ConvertTo1chMat(diffImgBR, width, height);
 	auto diffXXMat = ConvertTo1chMat(diffImgXX, width, height);
 
-	cv::namedWindow("DenoiseR", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
-	cv::namedWindow("DenoiseG", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
-	cv::namedWindow("DenoiseB", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
-	cv::namedWindow("DenoiseGray", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
+	cv::namedWindow("DenoiseR", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
+	cv::namedWindow("DenoiseG", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
+	cv::namedWindow("DenoiseB", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
+	cv::namedWindow("DenoiseGray", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
 	cv::imshow("DenoiseR", rDenoisedMat);
 	cv::imshow("DenoiseG", gDenoisedMat);
 	cv::imshow("DenoiseB", bDenoisedMat);
 	cv::imshow("DenoiseGray", grayDenoisedMat);
 
-	cv::namedWindow("BG", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
-	cv::namedWindow("GR", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
-	cv::namedWindow("BR", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
+	cv::namedWindow("BG", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
+	cv::namedWindow("GR", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
+	cv::namedWindow("BR", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
 	cv::imshow("BG", diffBGMat);
 	cv::imshow("GR", diffGRMat);
 	cv::imshow("BR", diffBRMat);
 
-	cv::namedWindow("XX", CV_WINDOW_AUTOSIZE | CV_WINDOW_FREERATIO);
+	cv::namedWindow("XX", cv::WINDOW_AUTOSIZE | cv::WINDOW_FREERATIO);
 	cv::imshow("XX", diffXXMat);
 
 

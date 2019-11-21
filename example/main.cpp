@@ -2,16 +2,6 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
-#ifdef _DEBUG
-
-#pragma comment(lib, "opencv_world320d.lib")
-
-#else
-
-#pragma comment(lib, "opencv_world320.lib")
-
-#endif
-
 #include "DenoiseProcessCircleModel.hpp"
 #include "DenoiseProcessEllipseModel.hpp"
 #include "DenoiseProcessEllipseModelHeavy.hpp"

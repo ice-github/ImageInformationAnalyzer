@@ -1,4 +1,4 @@
 add_executable(sample main.cpp)
 
-target_link_libraries(sample ImageInformationAnalyzer ${OpenCV_LIBS})
+target_link_libraries(sample ImageInformationAnalyzer ${OpenCV_LIBS} ${CERES_LIBRARIES} ${GLOG_LIBRARIES})
 
