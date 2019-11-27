@@ -16,7 +16,7 @@ namespace ImageInformationAnalyzer
             Eigen::FullPivLU<Eigen::Matrix3d> windowLUMatrix_;
 
             //WindowSizeが決まれば一意に決まる行列
-            Eigen::FullPivLU<Eigen::Matrix3d> CreateWindowLUMatrix(std::vector<ImageUtility::ImagePoint>& windowPoints)
+            Eigen::FullPivLU<Eigen::Matrix3d> CreateWindowLUMatrix(std::vector<ImageUtility::ImagePointBase>& windowPoints)
             {
                 auto A11 = 0.0;
                 auto A12 = 0.0;
@@ -50,7 +50,7 @@ namespace ImageInformationAnalyzer
             }
 
             //Param: A,B,C,D,E
-            inline std::tuple<double, double, double> GetParamAandCandE(const std::vector<ImageUtility::ImagePoint>& windowPoints) const
+            inline std::tuple<double, double, double> GetParamAandCandE(const std::vector<ImageUtility::ImagePointBase>& windowPoints) const
             {
                 //Ax = bを解く
                 auto b1 = 0.0;
@@ -72,7 +72,7 @@ namespace ImageInformationAnalyzer
                 return std::tuple<double, double, double>(ace.x(), ace.y(), ace.z());
             }
 
-            inline std::tuple<double, double> GetParamBandD(const std::vector<ImageUtility::ImagePoint>& windowPoints) const
+            inline std::tuple<double, double> GetParamBandD(const std::vector<ImageUtility::ImagePointBase>& windowPoints) const
             {
                 auto B1 = 0.0;
                 auto B2 = 0.0;
@@ -96,7 +96,7 @@ namespace ImageInformationAnalyzer
         public:
             explicit CircleDenoiseDataRepository()
             {
-                auto windowPoints = ImageUtility::GetWindowPoints(WINDOW_SIZE);
+                auto windowPoints = ImageUtility::GetWindowPoints<ImageUtility::ImagePointBase>(WINDOW_SIZE);
                 windowLUMatrix_ = CreateWindowLUMatrix(windowPoints);
             }
             virtual ~CircleDenoiseDataRepository() = default;
@@ -107,7 +107,7 @@ namespace ImageInformationAnalyzer
                 auto width = data->Width;
                 auto height = data->Height;
 
-                auto windowPoints = ImageUtility::GetWindowPoints(data, x, y, windowSize);
+                auto windowPoints = ImageUtility::GetWindowPoints<ImageUtility::ImagePointBase>(data, x, y, windowSize);
 
                 //Oを真値として、Sを実測値とする
                 //O = a*x^2 + b*x + c*y^2 + d*y + e

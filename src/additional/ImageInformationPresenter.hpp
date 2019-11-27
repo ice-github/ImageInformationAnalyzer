@@ -4,6 +4,7 @@
 #include "ImageFileService.hpp"
 #include "TakeHistogramService.hpp"
 #include "ImageEvaluationService.hpp"
+#include "ScaleImageService.hpp"
 
 #include "ImageInformationModel.hpp"
 
@@ -24,6 +25,7 @@ namespace ImageInformationAnalyzer
             ImageFileService imageFileService_;
             TakeHistogramService takeHistogramService_;
             ImageEvaluationService imageEvaluationService_;
+            ScaleImageService scaleImageService_;
 
             ImageInformationModel model_;
 
@@ -37,7 +39,7 @@ namespace ImageInformationAnalyzer
                     {
                         auto p = &output.data[y * output.step + x * output.elemSize()];
 
-                        *((double*)p) = data->ImageBuffer[y][x] / 255.0;
+                        *((double*)p) = data->ImageBuffer[y][x];
                     }
                 }
                 return output;
@@ -60,6 +62,25 @@ namespace ImageInformationAnalyzer
                 model_.R = r;
                 model_.G = g;
                 model_.B = b;
+
+                return true;
+            }
+
+            bool Scale()
+            {
+                if(model_.R == nullptr || model_.G == nullptr || model_.B == nullptr) return false;
+
+                auto scaledR = scaleImageService_.Process(model_.R, 0.0, 255.0, 0.0, 1.0);
+                auto scaledG = scaleImageService_.Process(model_.G, 0.0, 255.0, 0.0, 1.0);
+                auto scaledB = scaleImageService_.Process(model_.B, 0.0, 255.0, 0.0, 1.0);
+
+                delete model_.R;
+                delete model_.G;
+                delete model_.B;
+
+                model_.R = scaledR;
+                model_.G = scaledG;
+                model_.B = scaledB;
 
                 return true;
             }
@@ -117,9 +138,9 @@ namespace ImageInformationAnalyzer
 
                 //denoised‚ðoriginal‚¾‚Æ‚µ‚ÄŒvŽZ
 
-                auto resultR = imageEvaluationService_.Process(model_.DenoisedR, model_.R);
-                auto resultG = imageEvaluationService_.Process(model_.DenoisedG, model_.G);
-                auto resultB = imageEvaluationService_.Process(model_.DenoisedB, model_.B);
+                auto resultR = imageEvaluationService_.Process(model_.DenoisedR, model_.R, 1.0);
+                auto resultG = imageEvaluationService_.Process(model_.DenoisedG, model_.G, 1.0);
+                auto resultB = imageEvaluationService_.Process(model_.DenoisedB, model_.B, 1.0);
 
 
                 std::cout << std::setprecision(15) << "Result R: "s << resultR << std::endl;

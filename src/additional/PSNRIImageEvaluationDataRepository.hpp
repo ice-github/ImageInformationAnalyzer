@@ -14,10 +14,8 @@ namespace ImageInformationAnalyzer
             explicit PSNRIImageEvaluationDataRepository() = default;
             virtual ~PSNRIImageEvaluationDataRepository() = default;
 
-            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2)
+            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
             {
-                constexpr auto maxValue = 255.0;
-
                 auto width = data1->Width;
                 auto height = data1->Height;
 

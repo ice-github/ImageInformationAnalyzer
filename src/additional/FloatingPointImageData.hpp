@@ -114,7 +114,14 @@ namespace ImageInformationAnalyzer
                 }
 
                 //C++17
-                std::for_each(std::execution::par, processBuffer.begin(), processBuffer.end(), [&](std::tuple<int, int, double, Eigen::Vector3d, double> param)
+                std::atomic<int> errorPixel(0);
+
+            #ifdef _DEBUG
+                auto parallelPolicy = std::execution::seq;
+            #else
+                auto parallelPolicy = std::execution::par;
+            #endif
+                std::for_each(parallelPolicy, processBuffer.begin(), processBuffer.end(), [&](std::tuple<int, int, double, Eigen::Vector3d, double> param)
                 {
                     const auto x = std::get<0>(param);
                     const auto y = std::get<1>(param);
@@ -123,7 +130,12 @@ namespace ImageInformationAnalyzer
                     auto fittingError = 0.0;
                     Eigen::Vector3d normal;
 
-                    DenoisePixel(data, x, y, WINDOW_SIZE, denoisedPixel, normal, fittingError);
+                    if(!DenoisePixel(data, x, y, WINDOW_SIZE, denoisedPixel, normal, fittingError))
+                    {
+                        errorPixel++;
+                    }
+
+                    //Results
                     {
                         std::get<2>(processBuffer[(size_t)y * width + x]) = denoisedPixel;
                         std::get<3>(processBuffer[(size_t)y * width + x]) = normal;
@@ -147,6 +159,7 @@ namespace ImageInformationAnalyzer
                     imageBuffer[y][x] = denoisedPixel;
                     normalBuffer[y][x] = normal;
                 }
+                std::cout << "Error Pixel: "s << errorPixel << std::endl;
                 std::cout << "Fitting error/pixel: "s << totalFittingError / processBuffer.size() << std::endl;
 
                 return new FloatingPointImageData(width, height, imageBuffer, normalBuffer);
@@ -170,7 +183,7 @@ namespace ImageInformationAnalyzer
             explicit IScaleImageDataRepository() = default;
             virtual ~IScaleImageDataRepository() = default;
 
-            virtual FloatingPointImageData* Process(const FloatingPointImageData* data, const double newMinValue, const double newMaxValue) = 0;
+            virtual FloatingPointImageData* Process(const FloatingPointImageData* data, const double oldMinValue, const double oldMaxValue, const double newMinValue, const double newMaxValue) = 0;
         };
 
         class IImageEvaluationDataRepository
@@ -179,13 +192,13 @@ namespace ImageInformationAnalyzer
             explicit IImageEvaluationDataRepository() = default;
             virtual ~IImageEvaluationDataRepository() = default;
 
-            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2) = 0;
+            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue) = 0;
         };
 
         class ImageUtility
         {
         public:
-            struct ImagePoint
+            struct ImagePointBase
             {
                 int X;
                 int Y;
@@ -194,6 +207,7 @@ namespace ImageInformationAnalyzer
                 double Value;
             };
 
+            template<typename ImagePoint>
             static inline std::vector<ImagePoint> GetWindowPoints(const int windowSize)
             {
                 //範囲チェック
@@ -220,9 +234,10 @@ namespace ImageInformationAnalyzer
                 return points;
             }
 
+            template<typename ImagePoint>
             static inline std::vector<ImagePoint> GetWindowPoints(const FloatingPointImageData* data, const int x, const int y, const int windowSize)
             {
-                auto points = GetWindowPoints(windowSize);
+                auto points = GetWindowPoints<ImagePoint>(windowSize);
 
                 auto width = data->Width;
                 auto height = data->Height;

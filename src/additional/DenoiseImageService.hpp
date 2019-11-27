@@ -1,6 +1,8 @@
 #pragma once
 
 #include "CircleDenoiseDataRepository.hpp"
+#include "EllipseDenoiseDataRepository.hpp"
+#include "HyperEllipseDenoiseDataRepository.hpp"
 
 #include <thread>
 #include <iomanip> //for cout
@@ -18,8 +20,8 @@ namespace ImageInformationAnalyzer
             enum class Mode
             {
                 CIRCLE,
-                RENORMALIZATION,
-                SUPERRENORMALIZATION
+                ELLIPSE,
+                HYPER_ELLIPSE
             };
 
             IDenoiseImageDataRepository* repository_;
@@ -34,9 +36,11 @@ namespace ImageInformationAnalyzer
                     case Mode::CIRCLE:
                         repository_ = new CircleDenoiseDataRepository();
                         break;
-                    case Mode::RENORMALIZATION:
+                    case Mode::ELLIPSE:
+                        repository_ = new EllipseDenoiseDataRepository();
                         break;
-                    case Mode::SUPERRENORMALIZATION:
+                    case Mode::HYPER_ELLIPSE:
+                        repository_ = new HyperEllipseDenoiseDataRepository();
                         break;
                     default:
                         break;
@@ -45,7 +49,7 @@ namespace ImageInformationAnalyzer
 
             FloatingPointImageData* Process(const FloatingPointImageData* data)
             {
-                std::atomic<int> processedPixel;
+                std::atomic<int> processedPixel(0);
 
                 auto done = false;
                 auto elapsedMillisecounds = 0ll;

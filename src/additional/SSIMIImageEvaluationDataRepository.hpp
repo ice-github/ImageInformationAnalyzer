@@ -14,7 +14,7 @@ namespace ImageInformationAnalyzer
             explicit SSIMIImageEvaluationDataRepository() = default;
             virtual ~SSIMIImageEvaluationDataRepository() = default;
 
-            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2)
+            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
             {
                 auto width = data1->Width;
                 auto height = data1->Height;
@@ -51,11 +51,11 @@ namespace ImageInformationAnalyzer
 
                 constexpr auto K1 = 0.01;
                 constexpr auto K2 = 0.03;
-                constexpr auto dynamicRange = 255.0;
+                const auto dynamicRange = maxValue;
 
-                constexpr auto C1 = (K1 * dynamicRange) * (K1 * dynamicRange);
-                constexpr auto C2 = (K2 * dynamicRange) * (K2 * dynamicRange);
-                constexpr auto C3 = C2 / 2.0;
+                const auto C1 = (K1 * dynamicRange) * (K1 * dynamicRange);
+                const auto C2 = (K2 * dynamicRange) * (K2 * dynamicRange);
+                const auto C3 = C2 / 2.0;
 
                 auto l = (2.0 * average1 * average2 + C1) / (average1 * average1 + average2 * average2 + C1);
                 auto c = (2.0 * std::sqrt(variance1) * std::sqrt(variance2) + C2) / (variance1 * variance2 + C2);
