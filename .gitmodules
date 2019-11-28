@@ -7,3 +7,6 @@
 [submodule "ThirdParty/glog"]
 	path = ThirdParty/glog
 	url = https://github.com/google/glog.git
+[submodule "ThirdParty/cvui"]
+	path = ThirdParty/cvui
+	url = https://github.com/Dovyski/cvui.git
