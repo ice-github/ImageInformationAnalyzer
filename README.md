@@ -47,7 +47,23 @@ cd ../../
 
 ### Build Project
 ```
-cmake -DOpenCV_DIR=${opencv cmake directory} -DEigen_DIR=$INSTALL_DIR/share/eigen3/cmake -DCeres_DIR=$INSTALL_DIR/CMake ..
+cmake -DOpenCV_DIR=${opencv cmake directory} -DEigen3_DIR=$INSTALL_DIR/share/eigen3/cmake -DCeres_DIR=$INSTALL_DIR/CMake ..
 ```
 
+***OpenCV_DIR indicates the directory of OpenCVConfig.cmake file. e.g. opencv/build**
+
 ## How to run
+
+```
+./sample ${Project directory}/img/Hand.jpg
+```
+***you can change the luminance by using the setting window and "Apply" button**
+
+
+![Original Hand](img/Hand.jpg "Original Hand")
+* https://ja.m.wikipedia.org/wiki/%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB:Human-Hands-Front-Back.jpg
+
+![B-G image](img/B_G.jpg "B-G")
+![Setting image](img/Setting.jpg "Setting")
+![Setting image](img/Histogram.jpg "Histogram")
+
