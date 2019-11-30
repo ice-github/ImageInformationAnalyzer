@@ -8,44 +8,32 @@
 #include "RGBSpectrumDifferentialProcess.hpp"
 #include "LightDirectionSolver.hpp"
 
-void main()
+#include "ImageInformationPresenter.hpp"
+
+int main(int argc, char* argv[])
 {
-	ImageDataManager idm("index3.jpg");
+    if(argc < 2) return -1;
 
-	int windowsSize = 7;
+    using namespace ImageInformationAnalyzer::Presentation;
+    ImageInformationPresenter iip(DenoiseImageService::Mode::ELLIPSE, ImageEvaluationService::Mode::SSIM, TakeDifferenceService::Mode::WholePixel);
 
-	//ノイズ除去
-	if (!idm.LoadDenoisedBuffers())
-	{
-		DenoiseProcessCircleModel model(windowsSize);
-		//DenoiseProcessEllipseModel model(windowsSize);
-		//DenoiseProcessEllipseModelHeavy model(windowsSize);
+    std::string filepath(argv[1]);
 
-		//処理
-		model.Process(idm);
+    try
+    {
+        iip.LoadImage(filepath);
+        iip.Scale(); //Must excecute Scaler for Ellipse/HyperEllipse
+        iip.DenoiseImage();
+        iip.Evaluate();
+        iip.Diff();
+        //iip.LightEstimation();
+        iip.TakeHistogram();
+        iip.Show();
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "Exception: "s << e.what() << std::endl;
+    }
 
-		//保存
-		idm.SaveDenoisedBuffers();
-	}
-
-	//スペクトル差分
-	if (!idm.LoadDiffBuffers())
-	{
-		RGBSpectrumDifferentialProcess spectrumDiff(windowsSize);
-
-		spectrumDiff.Process(idm);
-
-		//保存
-		idm.SaveDiffBuffers();
-	}
-
-	//ソルバー
-	LightDirectionSolver lds;
-	lds.Run(idm);
-
-	//差分画像を値クリップ
-	idm.ClipDiffImagesWithCenterValue(0, 0, 30);
-
-	//表示
-	idm.ShowImages(true, true, true);
+    return 0;
 }
