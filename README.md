@@ -1,5 +1,13 @@
 # ImageInformationAnalyzer
 
+## What is this repository?
+
+An implimentation of the following article
+- https://shop.cqpub.co.jp/hanbai/books/MIF/MIF201805.html
+  - "特別企画　あなたの知らない生体計測の世界"
+
+**you can detect blood vessels from a RGB JPEG image. No need to use IR camera**
+
 ## How to build
 
 ### Clone repository
