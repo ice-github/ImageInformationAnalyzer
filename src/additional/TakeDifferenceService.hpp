@@ -1,11 +1,7 @@
 #pragma once
 
-#include "CircleDenoiseDataRepository.hpp"
-#include "EllipseDenoiseDataRepository.hpp"
-#include "HyperEllipseDenoiseDataRepository.hpp"
-
-#include <thread>
-#include <iomanip> //for cout
+#include "EachPixelSpectrumDifferentialDataRepository.hpp"
+#include "WholePixelSpectrumDifferentialDataRepository.hpp"
 
 namespace ImageInformationAnalyzer
 {
@@ -14,41 +10,39 @@ namespace ImageInformationAnalyzer
         using namespace Domain;
         using namespace Infrastructure;
 
-        class DenoiseImageService
+        class TakeDifferenceService
         {
+            IDifferentialDataRepository* repository_;
+
         public:
             enum class Mode
             {
-                CIRCLE,
-                ELLIPSE,
-                HYPER_ELLIPSE
+                EachPixel, //very slow
+                WholePixel
             };
 
-            IDenoiseImageDataRepository* repository_;
-
-        public:
-            explicit DenoiseImageService(Mode mode)
+            explicit TakeDifferenceService(Mode mode)
             {
                 repository_ = nullptr;
-
                 switch(mode)
                 {
-                    case Mode::CIRCLE:
-                        repository_ = new CircleDenoiseDataRepository();
+                    case Mode::EachPixel:
+                        repository_ = new EachPixelSpectrumDifferentialDataRepository();
                         break;
-                    case Mode::ELLIPSE:
-                        repository_ = new EllipseDenoiseDataRepository();
-                        break;
-                    case Mode::HYPER_ELLIPSE:
-                        repository_ = new HyperEllipseDenoiseDataRepository();
-                        break;
-                    default:
+                    case Mode::WholePixel:
+                        repository_ = new WholePixelSpectrumDifferentialDataRepository();
                         break;
                 }
+
             }
 
-            FloatingPointImageData* Process(const FloatingPointImageData* data)
+            virtual FloatingPointImageData* Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2)
             {
+                if(data1->Width != data2->Width || data1->Height != data2->Height)
+                {
+                    throw std::invalid_argument("Image sizes are NOT the same!");
+                }
+
                 std::atomic<int> processedPixel(0);
 
                 auto done = false;
@@ -60,7 +54,7 @@ namespace ImageInformationAnalyzer
                 {
                     auto start = std::chrono::system_clock::now();
                     {
-                        result = repository_->Process(data, &processedPixel);
+                        result = repository_->Process(data1, data2, &processedPixel);
                     }
                     auto end = std::chrono::system_clock::now();
                     elapsedMillisecounds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
@@ -75,16 +69,16 @@ namespace ImageInformationAnalyzer
                     std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 #endif
 
-                    std::cout << "Progress: "s << std::setprecision(3) << 100.0 * processedPixel / ((double)data->Width * data->Height) << "%"s << std::endl;
+                    std::cout << "Progress: "s << std::setprecision(3) << 100.0 * processedPixel / ((double)data1->Width * data1->Height) << "%"s << std::endl;
                 }
                 thread.join();
 
-                std::cout << "Denoise completed: "s << elapsedMillisecounds << "ms"s << std::endl;
+                std::cout << "Take image differential completed: "s << elapsedMillisecounds << "ms"s << std::endl;
 
-                return result;
+                return repository_->Process(data1, data2);
             }
 
-            virtual ~DenoiseImageService()
+            virtual ~TakeDifferenceService()
             {
                 delete repository_;
             }

@@ -14,7 +14,7 @@ namespace ImageInformationAnalyzer
             explicit PSNRIImageEvaluationDataRepository() = default;
             virtual ~PSNRIImageEvaluationDataRepository() = default;
 
-            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
+            virtual ImageEvaluationData* Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
             {
                 auto width = data1->Width;
                 auto height = data1->Height;
@@ -31,7 +31,8 @@ namespace ImageInformationAnalyzer
                 mse /= ((double)width * height);
 
                 //PSNR
-                return 10.0 * std::log10(maxValue * maxValue / mse);
+                auto psnr = 10.0 * std::log10(maxValue * maxValue / mse);
+                return new ImageEvaluationData(psnr);
             }
         };
     }

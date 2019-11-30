@@ -12,7 +12,7 @@ namespace ImageInformationAnalyzer
         using namespace Domain;
         using namespace std::literals::string_literals;
 
-        class JpegFileDataRepository: public IImageFileDataRepository
+        class GraphicFileDataRepository: public IImageFileDataRepository
         {
             inline std::vector<std::vector<double>> ReadCVMat(const cv::Mat& img, const IImageFileDataRepository::Channel channel)
             {
@@ -60,8 +60,8 @@ namespace ImageInformationAnalyzer
 
 
         public:
-            explicit JpegFileDataRepository() = default;
-            virtual ~JpegFileDataRepository() = default;
+            explicit GraphicFileDataRepository() = default;
+            virtual ~GraphicFileDataRepository() = default;
 
             virtual FloatingPointImageData* Load(const std::string& filePath, const IImageFileDataRepository::Channel channel) override
             { 
@@ -81,7 +81,7 @@ namespace ImageInformationAnalyzer
                     normalBuffer[y].resize(width);
                     for(auto x = 0; x < width; ++x)
                     {
-                        normalBuffer[y][x] = Eigen::Vector3d(0, 0, 1);
+                        normalBuffer[y][x] = Eigen::Vector3d(0, 0, 1);//dummy
                     }
                 }
 
@@ -101,6 +101,15 @@ namespace ImageInformationAnalyzer
                 cv::imwrite(filePath, imgMat);
 
                 return true;
+            }
+
+            virtual bool IsExtensionSupported(const std::string& extension) override
+            {
+                if(extension == "jpg"s || extension == "jpeg"s || extension == "png"s || extension == "bmp"s)
+                {
+                    return true;
+                }
+                return false;
             }
         };
     }

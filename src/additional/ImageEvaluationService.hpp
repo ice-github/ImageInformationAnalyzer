@@ -37,7 +37,7 @@ namespace ImageInformationAnalyzer
                 }
             }
 
-            double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
+            ImageEvaluationData* Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
             {
                 if(data1->Width != data2->Width || data1->Height != data2->Height)
                 {

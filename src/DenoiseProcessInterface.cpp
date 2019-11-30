@@ -53,9 +53,9 @@ bool DenoiseProcessInterface::DenoiseBuffer(const DenoiseArgs& args, std::vector
 				if (elapsed > 10 * 1000 || (y == args.height - 1 && x == args.width - 1))
 				{
 					std::cout << "Progress: " << y / (args.height - 1.0f) * 100 << "%, ";
-					std::cout << "Error/pixel: " << totalError / (y * args.width) / (windowSize_ * windowSize_) << ", ";
-					std::cout << "Error(Min, Max): " << minError << ", " << maxError << ", ";
-					std::cout << "PixelErrors: " << pixelError << std::endl;
+					std::cout << "  Error/pixel: " << totalError / ((double)y * args.width) / ((double)windowSize_ * windowSize_) << ", " << std::endl;
+					std::cout << "  Error(Min, Max): " << minError << ", " << maxError << ", " << std::endl;
+                    std::cout << "  PixelErrors: " << pixelError << std::endl;
 					start = end;
 				}
 			}

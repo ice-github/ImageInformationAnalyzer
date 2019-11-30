@@ -16,5 +16,6 @@ target_include_directories(ImageInformationAnalyzer
   ${GLOG_INCLUDE_DIR}
   ${CERES_INCLUDE_DIR}
   ${OpenCV_INCLUDE_DIRS}
+  ${PROJECT_SOURCE_DIR}/ThirdParty/cvui
   )
 

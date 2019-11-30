@@ -122,7 +122,7 @@ bool DenoiseProcessEllipseModel::Correction(Eigen::Matrix<double, 7, 1>& theta0,
 
 		if (loop == maxLoop - 1)
 		{
-			//std::cout << "detect max loop!: " << maxLoop << std::endl;
+			//std::cout << "detected max loop!: " << maxLoop << std::endl;
 			return false;
 		}
 	}

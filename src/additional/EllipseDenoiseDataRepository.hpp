@@ -117,7 +117,7 @@ namespace ImageInformationAnalyzer
 
                     if(loop == MAX_LOOP - 1)
                     {
-                        std::cout << "detect max loop!: "s << distance << std::endl;
+                        //std::cout << "detected max loop!: "s << distance << std::endl;
                         return false;
                     }
                 }

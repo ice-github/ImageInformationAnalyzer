@@ -22,7 +22,7 @@ void LightDirectionSolver::Run(ImageDataManager& image, double pixelPitch)
 		for (auto x = 0; x < image.width; ++x)
 		{
 			Data d;
-			d.Position = Eigen::Vector3d((x - image.width / 2) * pixelPitch, (x - image.height / 2) * pixelPitch, 0);
+			d.Position = Eigen::Vector3d((x - image.width / 2.0) * pixelPitch, (x - image.height / 2.0) * pixelPitch, 0);
 			d.Normal = Eigen::Vector3d(image.grayScale.imgNormalX[y][x], image.grayScale.imgNormalY[y][x], image.grayScale.imgNormalZ[y][x]);
 			d.grayValue = image.grayScale.imgDenoised[y][x];
 			d.skinValue = image.diffImgBG[y][x];//image.diffImgBR[y][x]
@@ -81,7 +81,7 @@ void LightDirectionSolver::Run(ImageDataManager& image, double pixelPitch)
 	{
 		for (auto x = 0; x < image.width; ++x)
 		{
-			auto point = Eigen::Vector3d((x - image.width / 2) * pixelPitch, (x - image.height / 2) * pixelPitch, 0);
+			auto point = Eigen::Vector3d((x - image.width / 2.0) * pixelPitch, (x - image.height / 2.0) * pixelPitch, 0);
 			auto normal = Eigen::Vector3d(image.grayScale.imgNormalX[y][x], image.grayScale.imgNormalY[y][x], image.grayScale.imgNormalZ[y][x]);
 			auto grayValue = image.grayScale.imgDenoised[y][x];
 

@@ -72,7 +72,7 @@ class DenoiseProcessCircleModel : public DenoiseProcessInterface
 		for (auto i = 0; i < window.size(); i++)
 		{
 			sum1 += window[i].x * window[i].value;
-			sum2 += window[i].x * window[i].x;
+			sum2 += window[i].x * (double)window[i].x;
 		}
 
 		return sum1 / sum2;
@@ -85,7 +85,7 @@ class DenoiseProcessCircleModel : public DenoiseProcessInterface
 		for (auto i = 0; i < window.size(); i++)
 		{
 			sum1 += window[i].y * window[i].value;
-			sum2 += window[i].y * window[i].y;
+			sum2 += window[i].y * (double)window[i].y;
 		}
 
 		return sum1 / sum2;
@@ -130,7 +130,7 @@ public:
 	DenoiseProcessCircleModel(const int windowSize = 5, const bool replaceGrayScale = false): DenoiseProcessInterface(windowSize, replaceGrayScale)
 	{
 		//LUs—ñ‚Ìì¬
-		luMatrix_ = CreateLUMatrix(windowPoints);
+		luMatrix_ = CreateLUMatrix(windowPoints_);
 	}
 	virtual ~DenoiseProcessCircleModel()
 	{

@@ -14,7 +14,7 @@ namespace ImageInformationAnalyzer
             explicit SSIMIImageEvaluationDataRepository() = default;
             virtual ~SSIMIImageEvaluationDataRepository() = default;
 
-            virtual double Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
+            virtual ImageEvaluationData* Process(const FloatingPointImageData* data1, const FloatingPointImageData* data2, const double maxValue)
             {
                 auto width = data1->Width;
                 auto height = data1->Height;
@@ -66,7 +66,8 @@ namespace ImageInformationAnalyzer
                 constexpr auto gamma = 1.0;
 
                 //SSIM
-                return std::pow(l, alpha) + std::pow(c, beta) + std::pow(s, gamma);
+                auto ssim = std::pow(l, alpha) + std::pow(c, beta) + std::pow(s, gamma);
+                return new ImageEvaluationData(ssim);
             }
         };
     }

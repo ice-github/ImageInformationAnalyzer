@@ -20,7 +20,7 @@ protected:
 		int y;
 		double value;
 	};
-	std::vector<Point> windowPoints;
+	std::vector<Point> windowPoints_;
 
 	struct DenoiseArgs
 	{
@@ -60,7 +60,7 @@ public:
 	DenoiseProcessInterface(const int windowSize = 5, bool replaceGrayScale = false): windowSize_(windowSize), replaceGrayScale_(replaceGrayScale)
 	{
 		//ウインドウ作成
-		windowPoints = CreateWindow(windowSize_);
+		windowPoints_ = CreateWindow(windowSize_);
 	}
 	virtual ~DenoiseProcessInterface()
 	{
@@ -73,21 +73,21 @@ public:
 		{
 			std::cout << "Red" << std::endl;
 			DenoiseArgs arg = {image.rInfo.imgDenoised , image.rInfo.imgOriginal, image.width, image.height, image.rInfo.imgNormalX, image.rInfo.imgNormalY, image.rInfo.imgNormalZ};
-			DenoiseBuffer(arg, windowPoints, true);
+			DenoiseBuffer(arg, windowPoints_, true);
 		}
 
 		//G
 		{
 			std::cout << "Green" << std::endl;
 			DenoiseArgs arg = { image.gInfo.imgDenoised , image.gInfo.imgOriginal, image.width, image.height, image.gInfo.imgNormalX, image.gInfo.imgNormalY, image.gInfo.imgNormalZ };
-			DenoiseBuffer(arg, windowPoints, true);
+			DenoiseBuffer(arg, windowPoints_, true);
 		}
 
 		//B
 		{
 			std::cout << "Blue" << std::endl;
 			DenoiseArgs arg = { image.bInfo.imgDenoised , image.bInfo.imgOriginal, image.width, image.height, image.bInfo.imgNormalX, image.bInfo.imgNormalY, image.bInfo.imgNormalZ };
-			DenoiseBuffer(arg, windowPoints, true);
+			DenoiseBuffer(arg, windowPoints_, true);
 		}
 
 		//Replace GrayScale to Denoised GrayScale
@@ -102,7 +102,7 @@ public:
 		{
 			std::cout << "GrayScale" << std::endl;
 			DenoiseArgs arg = { image.grayScale.imgDenoised , image.grayScale.imgOriginal, image.width, image.height, image.grayScale.imgNormalX, image.grayScale.imgNormalY, image.grayScale.imgNormalZ };
-			DenoiseBuffer(arg, windowPoints, true);
+			DenoiseBuffer(arg, windowPoints_, true);
 		}
 
 		return true;

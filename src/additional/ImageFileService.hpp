@@ -1,6 +1,6 @@
 #pragma once
 
-#include "JpegFileDataRepository.hpp"
+#include "GraphicFileDataRepository.hpp"
 
 namespace ImageInformationAnalyzer
 {
@@ -11,13 +11,13 @@ namespace ImageInformationAnalyzer
 
         class ImageFileService
         {
-            IImageFileDataRepository* jpegRepository_;
+            IImageFileDataRepository* graphicRepository_;
             IImageFileDataRepository* jsonRepository_;
 
         public:
             explicit ImageFileService()
             {
-                jpegRepository_ = new JpegFileDataRepository();
+                graphicRepository_ = new GraphicFileDataRepository();
                 jsonRepository_ = nullptr;
             }
 
@@ -27,15 +27,15 @@ namespace ImageInformationAnalyzer
                 if(extensionPos == std::string::npos) throw std::invalid_argument("invalid image file!"s);
 
                 auto extension = filePath.substr(extensionPos + 1);
-                if(extension == "jpg"s || extension == "jpeg"s)
+                if(graphicRepository_->IsExtensionSupported(extension))
                 {
-                    return jpegRepository_->Load(filePath, channel);
+                    return graphicRepository_->Load(filePath, channel);
                 }
 
-                if(extension == "json"s)
-                {
-                    return jsonRepository_->Load(filePath, channel);
-                }
+                //if(jsonRepository_->IsExtensionSupported(extension))
+                //{
+                //    return jsonRepository_->Load(filePath, channel);
+                //}
 
                 throw std::logic_error("file type not supported!"s);
             }
@@ -45,22 +45,23 @@ namespace ImageInformationAnalyzer
                 if(extensionPos == std::string::npos) throw std::invalid_argument("invalid image file!"s);
 
                 auto extension = filePath.substr(filePath.length() + 1);
-                if(extension == "jpg"s || extension == "jpeg"s)
+                
+                if(graphicRepository_->IsExtensionSupported(extension))
                 {
-                    return jpegRepository_->Store(r, g, b, filePath);
+                    return graphicRepository_->Store(r, g, b, filePath);
                 }
-
-                if(extension == "json"s)
-                {
-                    return jsonRepository_->Store(r, g, b, filePath);
-                }
+                
+                //if(jsonRepository_->IsExtensionSupported(extension))
+                //{
+                //    return jsonRepository_->Store(r, g, b, filePath);
+                //}
 
                 throw std::logic_error("file type not supported!"s);
             }
 
             virtual ~ImageFileService()
             {
-                delete jpegRepository_;
+                delete graphicRepository_;
                 delete jsonRepository_;
             }
         };

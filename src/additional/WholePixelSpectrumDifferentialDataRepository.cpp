@@ -1,5 +1,5 @@
 
-#include "JpegFileDataRepository.hpp"
+#include "WholePixelSpectrumDifferentialDataRepository.hpp"
 
 namespace ImageInformationAnalyzer
 {
