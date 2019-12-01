@@ -1,19 +1,14 @@
 
 #include <iostream>
-#include <opencv2/opencv.hpp>
-
-#include "DenoiseProcessCircleModel.hpp"
-#include "DenoiseProcessEllipseModel.hpp"
-#include "DenoiseProcessEllipseModelHeavy.hpp"
-#include "RGBSpectrumDifferentialProcess.hpp"
-#include "LightDirectionSolver.hpp"
 
 #include "ImageInformationPresenter.hpp"
+#include "DenoiseImageService.hpp"
 
 int main(int argc, char* argv[])
 {
     if(argc < 2) return -1;
 
+	//TODO: Add https://github.com/google/fruit for DI
     using namespace ImageInformationAnalyzer::Presentation;
     ImageInformationPresenter iip(DenoiseImageService::Mode::ELLIPSE, ImageEvaluationService::Mode::SSIM, TakeDifferenceService::Mode::WholePixel);
 

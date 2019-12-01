@@ -39,6 +39,9 @@ if(OpenMP_FOUND)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
+# direct path for CVUI
+set(CVUI_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/ThirdParty/cvui)
+
 # Directories
 add_subdirectory(src)
 add_subdirectory(example)
